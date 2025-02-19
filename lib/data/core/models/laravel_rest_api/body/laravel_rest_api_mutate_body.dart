@@ -17,7 +17,7 @@ class LaravelRestApiMutateBody {
 class Mutation {
   MutationOperation operation;
   Map<String, dynamic>? attributes;
-  int? key;
+  dynamic key;
 
   Mutation({
     required this.operation,
