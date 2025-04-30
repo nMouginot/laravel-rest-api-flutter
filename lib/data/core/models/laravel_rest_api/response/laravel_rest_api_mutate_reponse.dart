@@ -1,6 +1,6 @@
 class LaravelRestApiMutateResponse {
-  final List<int> created;
-  final List<int> updated;
+  final List<dynamic> created;
+  final List<dynamic> updated;
 
   LaravelRestApiMutateResponse({
     required this.created,
@@ -9,8 +9,8 @@ class LaravelRestApiMutateResponse {
 
   factory LaravelRestApiMutateResponse.fromJson(Map<String, dynamic> json) {
     return LaravelRestApiMutateResponse(
-      created: List<int>.from(json['created'] ?? []),
-      updated: List<int>.from(json['updated'] ?? []),
+      created: List<dynamic>.from(json['created'] ?? []),
+      updated: List<dynamic>.from(json['updated'] ?? []),
     );
   }
 

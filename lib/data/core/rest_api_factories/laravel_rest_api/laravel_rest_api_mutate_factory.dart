@@ -33,8 +33,8 @@ mixin MutateFactory<T> {
       return RestApiResponse<LaravelRestApiMutateResponse>(
         body: response.body,
         data: LaravelRestApiMutateResponse(
-          created: response.body["created"].map<int>((e) => e as int).toList(),
-          updated: response.body["updated"].map<int>((e) => e as int).toList(),
+          created: response.body["created"],
+          updated: response.body["updated"],
         ),
         message: response.message,
         headers: response.headers,
