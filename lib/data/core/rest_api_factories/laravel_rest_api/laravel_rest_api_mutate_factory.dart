@@ -16,10 +16,12 @@ mixin MutateFactory<T> {
 
   Future<RestApiResponse<LaravelRestApiMutateResponse>> mutate({
     required LaravelRestApiMutateBody body,
+    Map<String, String>? headers,
   }) async {
     // Sending the request using a REST API client.
     final response = await handlingResponse(
       '$baseRoute/mutate',
+      headers: headers,
       apiMethod: ApiMethod.post,
       client: httpClient,
       body: body.toJson(),

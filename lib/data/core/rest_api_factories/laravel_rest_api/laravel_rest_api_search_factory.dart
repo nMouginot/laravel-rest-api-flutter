@@ -60,6 +60,9 @@ mixin SearchFactory<T> {
 
     /// **Pagination Limit**: Specify the maximum number of results per page.
     int? limit,
+
+    ///Request header
+    Map<String, String>? headers,
   }) async {
     RestApiResponse? response;
     try {
@@ -83,6 +86,7 @@ mixin SearchFactory<T> {
       // Sending the request using a REST API client.
       response = await handlingResponse(
         '$baseRoute/search',
+        headers: headers,
         apiMethod: ApiMethod.post,
         client: httpClient,
         body: requestBody.isEmpty ? null : requestBody,

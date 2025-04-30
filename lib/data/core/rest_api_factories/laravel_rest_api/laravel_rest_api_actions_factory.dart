@@ -15,11 +15,13 @@ mixin ActionsFactory<T> {
 
   Future<RestApiResponse<int>> actions({
     required LaravelRestApiActionsBody data,
+    Map<String, String>? headers,
   }) async {
     late RestApiResponse response;
     try {
       response = await handlingResponse(
         baseRoute,
+        headers: headers,
         apiMethod: ApiMethod.post,
         client: httpClient,
         body: data.toJson(),

@@ -22,16 +22,18 @@ Future<RestApiResponse> handlingResponse(
   try {
     switch (apiMethod) {
       case ApiMethod.get:
-        response = await client.get(route);
+        response = await client.get(route, headers: headers);
       case ApiMethod.post:
         response = await client.post(
           route,
           body: body,
+          headers: headers,
         );
       case ApiMethod.delete:
         response = await client.delete(
           route,
           body: body,
+          headers: headers,
         );
     }
 

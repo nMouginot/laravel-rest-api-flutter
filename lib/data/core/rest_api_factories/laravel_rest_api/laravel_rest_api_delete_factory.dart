@@ -14,6 +14,7 @@ mixin DeleteFactory<T> {
 
   Future<RestApiResponse<List<T>>> delete({
     required List<dynamic> resourceIds,
+    Map<String, String>? headers,
   }) async {
     late RestApiResponse response;
     try {
