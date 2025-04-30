@@ -194,15 +194,16 @@ void main() {
       data: captureAnyNamed('data'),
     )).captured;
 
-    expect(capturedArgs[0].containsKey('filters'), isTrue);
-    expect(capturedArgs[0].containsKey('aggregates'), isTrue);
-    expect(capturedArgs[0].containsKey('includes'), isTrue);
-    expect(capturedArgs[0].containsKey('instructions'), isTrue);
-    expect(capturedArgs[0].containsKey('scopes'), isTrue);
-    expect(capturedArgs[0].containsKey('selects'), isTrue);
-    expect(capturedArgs[0].containsKey('sorts'), isTrue);
-    expect(capturedArgs[0].containsKey('limit'), isTrue);
-    expect(capturedArgs[0].containsKey('page'), isTrue);
+    expect(capturedArgs[0].containsKey('search'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('filters'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('aggregates'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('includes'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('instructions'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('scopes'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('selects'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('sorts'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('limit'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('page'), isTrue);
   });
   test('Check if defaultSearchBody is correctly send to api', () async {
     when(mockDio.post(
@@ -223,7 +224,8 @@ void main() {
       data: captureAnyNamed('data'),
     )).captured;
 
-    expect(capturedArgs[0].containsKey('filters'), isTrue);
-    expect(capturedArgs[0].containsKey('aggregates'), isTrue);
+    expect(capturedArgs[0].containsKey('search'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('filters'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('aggregates'), isTrue);
   });
 }

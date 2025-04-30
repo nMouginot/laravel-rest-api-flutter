@@ -68,19 +68,23 @@ mixin SearchFactory<T> {
     try {
       // Building the request body with defaults and overrides.
       final requestBody = {
-        ...?defaultSearchBody?.toJson(),
-        if (scopes != null) 'scopes': scopes.map((e) => e.toJson()).toList(),
-        if (filters != null) 'filters': filters.map((e) => e.toJson()).toList(),
-        if (sorts != null) 'sorts': sorts.map((e) => e.toJson()).toList(),
-        if (selects != null) 'selects': selects.map((e) => e.toJson()).toList(),
-        if (includes != null)
-          'includes': includes.map((e) => e.toJson()).toList(),
-        if (aggregates != null)
-          'aggregates': aggregates.map((e) => e.toJson()).toList(),
-        if (instructions != null)
-          'instructions': instructions.map((e) => e.toJson()).toList(),
-        if (limit != null) 'limit': limit,
-        if (instructions != null) 'page': page,
+        "search": {
+          ...?defaultSearchBody?.toJson(),
+          if (scopes != null) 'scopes': scopes.map((e) => e.toJson()).toList(),
+          if (filters != null)
+            'filters': filters.map((e) => e.toJson()).toList(),
+          if (sorts != null) 'sorts': sorts.map((e) => e.toJson()).toList(),
+          if (selects != null)
+            'selects': selects.map((e) => e.toJson()).toList(),
+          if (includes != null)
+            'includes': includes.map((e) => e.toJson()).toList(),
+          if (aggregates != null)
+            'aggregates': aggregates.map((e) => e.toJson()).toList(),
+          if (instructions != null)
+            'instructions': instructions.map((e) => e.toJson()).toList(),
+          if (limit != null) 'limit': limit,
+          if (instructions != null) 'page': page,
+        }
       };
 
       // Sending the request using a REST API client.
@@ -89,7 +93,7 @@ mixin SearchFactory<T> {
         headers: headers,
         apiMethod: ApiMethod.post,
         client: httpClient,
-        body: requestBody.isEmpty ? null : requestBody,
+        body: requestBody["search"]!.isEmpty ? null : requestBody,
       );
 
       if (!successStatus.contains(response.statusCode)) {
