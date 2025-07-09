@@ -376,8 +376,3 @@ test('Perform a custom action on items', () async {
   expect(result.data, greaterThanOrEqualTo(1));
 });
 ```
-
----
-
-## 📜 DAILYAPPS BY XEFI
-
