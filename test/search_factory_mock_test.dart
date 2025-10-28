@@ -169,7 +169,13 @@ void main() {
       aggregates: [
         Aggregate(relation: "relation", type: "type", field: "field"),
       ],
-      includes: [Include(relation: "relation")],
+      includes: [
+        Include(
+          relation: "relation",
+          selects: [Select(field: "relationField")],
+          filters: [Filter(field: "relationFilter")],
+        ),
+      ],
       instructions: [
         Instruction(
           name: "name",
@@ -200,6 +206,16 @@ void main() {
     expect(capturedArgs[0]["search"].containsKey('sorts'), isTrue);
     expect(capturedArgs[0]["search"].containsKey('limit'), isTrue);
     expect(capturedArgs[0]["search"].containsKey('page'), isTrue);
+    expect(
+      capturedArgs[0]["search"]["includes"][0]["selects"][0]["field"] ==
+          "relationField",
+      isTrue,
+    );
+    expect(
+      capturedArgs[0]["search"]["includes"][0]["filters"][0]["field"] ==
+          "relationFilter",
+      isTrue,
+    );
   });
   test('Check if defaultSearchBody is correctly send to api', () async {
     when(mockDio.post('/items/search', data: anyNamed('data'))).thenAnswer(
