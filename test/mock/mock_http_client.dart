@@ -9,8 +9,11 @@ class MockApiHttpClient implements RestApiClient {
   MockApiHttpClient({required this.dio});
 
   @override
-  Future<RestApiResponse> get(String url,
-      {Map<String, String>? headers, Map<String, String>? queryParams}) async {
+  Future<RestApiResponse> get(
+    String url, {
+    Map<String, String>? headers,
+    Map<String, String>? queryParams,
+  }) async {
     try {
       final response = await dio.get(
         url,
@@ -52,10 +55,7 @@ class MockApiHttpClient implements RestApiClient {
     Object? body,
   }) async {
     try {
-      final response = await dio.delete(
-        url,
-        data: body,
-      );
+      final response = await dio.delete(url, data: body);
       return RestApiResponse(
         statusCode: response.statusCode,
         body: response.data,
@@ -73,9 +73,6 @@ class MockApiHttpClient implements RestApiClient {
         body: exception.response?.data ?? {'error': exception.message},
       );
     }
-    return RestApiResponse(
-      statusCode: 500,
-      body: {'error': exception},
-    );
+    return RestApiResponse(statusCode: 500, body: {'error': exception});
   }
 }
