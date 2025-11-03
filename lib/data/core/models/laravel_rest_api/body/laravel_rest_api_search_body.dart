@@ -28,27 +28,34 @@ class LaravelRestApiSearchBody {
   factory LaravelRestApiSearchBody.fromJson(Map<String, dynamic> json) {
     return LaravelRestApiSearchBody(
       text: json['text'] != null ? TextSearch.fromJson(json['text']) : null,
-      scopes: (json['scopes'] as List<dynamic>?)
-          ?.map((e) => Scope.fromJson(e))
-          .toList(),
-      filters: (json['filters'] as List<dynamic>?)
-          ?.map((e) => Filter.fromJson(e))
-          .toList(),
-      sorts: (json['sorts'] as List<dynamic>?)
-          ?.map((e) => Sort.fromJson(e))
-          .toList(),
-      selects: (json['selects'] as List<dynamic>?)
-          ?.map((e) => Select.fromJson(e))
-          .toList(),
-      includes: (json['includes'] as List<dynamic>?)
-          ?.map((e) => Include.fromJson(e))
-          .toList(),
-      aggregates: (json['aggregates'] as List<dynamic>?)
-          ?.map((e) => Aggregate.fromJson(e))
-          .toList(),
-      instructions: (json['instructions'] as List<dynamic>?)
-          ?.map((e) => Instruction.fromJson(e))
-          .toList(),
+      scopes:
+          (json['scopes'] as List<dynamic>?)
+              ?.map((e) => Scope.fromJson(e))
+              .toList(),
+      filters:
+          (json['filters'] as List<dynamic>?)
+              ?.map((e) => Filter.fromJson(e))
+              .toList(),
+      sorts:
+          (json['sorts'] as List<dynamic>?)
+              ?.map((e) => Sort.fromJson(e))
+              .toList(),
+      selects:
+          (json['selects'] as List<dynamic>?)
+              ?.map((e) => Select.fromJson(e))
+              .toList(),
+      includes:
+          (json['includes'] as List<dynamic>?)
+              ?.map((e) => Include.fromJson(e))
+              .toList(),
+      aggregates:
+          (json['aggregates'] as List<dynamic>?)
+              ?.map((e) => Aggregate.fromJson(e))
+              .toList(),
+      instructions:
+          (json['instructions'] as List<dynamic>?)
+              ?.map((e) => Instruction.fromJson(e))
+              .toList(),
       gates:
           (json['gates'] as List<dynamic>?)?.map((e) => e as String).toList(),
       page: json['page'] as int?,
@@ -86,9 +93,7 @@ class TextSearch {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      if (value != null) 'value': value,
-    };
+    return {if (value != null) 'value': value};
   }
 }
 
@@ -106,10 +111,7 @@ class Scope {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      if (parameters != null) 'parameters': parameters,
-    };
+    return {'name': name, if (parameters != null) 'parameters': parameters};
   }
 }
 
@@ -128,9 +130,10 @@ class Filter {
       operator: json['operator'] as String?,
       value: json['value'],
       type: json['type'] as String?,
-      nested: (json['nested'] as List<dynamic>?)
-          ?.map((e) => Filter.fromJson(e))
-          .toList(),
+      nested:
+          (json['nested'] as List<dynamic>?)
+              ?.map((e) => Filter.fromJson(e))
+              .toList(),
     );
   }
 
@@ -159,10 +162,7 @@ class Sort {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'field': field,
-      'direction': direction,
-    };
+    return {'field': field, 'direction': direction};
   }
 }
 
@@ -172,31 +172,33 @@ class Select {
   Select({required this.field});
 
   factory Select.fromJson(Map<String, dynamic> json) {
-    return Select(
-      field: json['field'] as String,
-    );
+    return Select(field: json['field'] as String);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'field': field,
-    };
+    return {'field': field};
   }
 }
 
 class Include {
   final String relation;
+  final List<Include>? includes;
   final List<Filter>? filters;
   final int? limit;
 
-  Include({required this.relation, this.filters, this.limit});
+  Include({required this.relation, this.includes, this.filters, this.limit});
 
   factory Include.fromJson(Map<String, dynamic> json) {
     return Include(
       relation: json['relation'] as String,
-      filters: (json['filters'] as List<dynamic>?)
-          ?.map((e) => Filter.fromJson(e))
-          .toList(),
+      includes:
+          (json['includes'] as List<dynamic>?)
+              ?.map((e) => Include.fromJson(e))
+              .toList(),
+      filters:
+          (json['filters'] as List<dynamic>?)
+              ?.map((e) => Filter.fromJson(e))
+              .toList(),
       limit: json['limit'] as int?,
     );
   }
@@ -204,6 +206,8 @@ class Include {
   Map<String, dynamic> toJson() {
     return {
       'relation': relation,
+      if (includes != null)
+        'includes': includes!.map((e) => e.toJson()).toList(),
       if (filters != null) 'filters': filters!.map((e) => e.toJson()).toList(),
       if (limit != null) 'limit': limit,
     };
@@ -228,9 +232,10 @@ class Aggregate {
       relation: json['relation'] as String,
       type: json['type'] as String,
       field: json['field'] as String,
-      filters: (json['filters'] as List<dynamic>?)
-          ?.map((e) => Filter.fromJson(e))
-          .toList(),
+      filters:
+          (json['filters'] as List<dynamic>?)
+              ?.map((e) => Filter.fromJson(e))
+              .toList(),
     );
   }
 
@@ -253,17 +258,15 @@ class Instruction {
   factory Instruction.fromJson(Map<String, dynamic> json) {
     return Instruction(
       name: json['name'] as String,
-      fields: (json['fields'] as List<dynamic>)
-          .map((e) => Field.fromJson(e))
-          .toList(),
+      fields:
+          (json['fields'] as List<dynamic>)
+              .map((e) => Field.fromJson(e))
+              .toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'fields': fields.map((e) => e.toJson()).toList(),
-    };
+    return {'name': name, 'fields': fields.map((e) => e.toJson()).toList()};
   }
 }
 
@@ -274,16 +277,10 @@ class Field {
   Field({required this.name, required this.value});
 
   factory Field.fromJson(Map<String, dynamic> json) {
-    return Field(
-      name: json['name'] as String,
-      value: json['value'],
-    );
+    return Field(name: json['name'] as String, value: json['value']);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'value': value,
-    };
+    return {'name': name, 'value': value};
   }
 }
