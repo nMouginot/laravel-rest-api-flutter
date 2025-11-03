@@ -174,6 +174,7 @@ void main() {
           relation: "relation",
           selects: [Select(field: "relationField")],
           filters: [Filter(field: "relationFilter")],
+          includes: [Include(relation: "relationIncludes")],
         ),
       ],
       instructions: [
@@ -214,6 +215,11 @@ void main() {
     expect(
       capturedArgs[0]["search"]["includes"][0]["filters"][0]["field"] ==
           "relationFilter",
+      isTrue,
+    );
+    expect(
+      capturedArgs[0]["search"]["includes"][0]["includes"][0]["relation"] ==
+          "relationIncludes",
       isTrue,
     );
   });
