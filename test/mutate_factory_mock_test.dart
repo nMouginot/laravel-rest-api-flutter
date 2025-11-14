@@ -41,7 +41,7 @@ void main() {
                 "operation": "create",
                 "attributes": ItemModel(id: 1, name: "name").toJson(),
               },
-            ]
+            ],
           },
         ),
       ).thenAnswer(
@@ -50,7 +50,7 @@ void main() {
           statusCode: 200,
           data: {
             "created": [1],
-            "updated": []
+            "updated": [],
           },
         ),
       );
@@ -61,7 +61,7 @@ void main() {
             Mutation(
               operation: MutationOperation.create,
               attributes: ItemModel(id: 1, name: "name").toJson(),
-            )
+            ),
           ],
         ),
       );
@@ -73,28 +73,32 @@ void main() {
     });
 
     test('[500] With common laravel error message', () async {
-      when(mockDio.post(
-        '/items/mutate',
-        data: {
-          "mutate": [
-            {
-              "operation": "create",
-              "attributes": ItemModel(id: 1, name: "name").toJson(),
-            },
-          ]
-        },
-      )).thenAnswer((_) async => Response(
-            requestOptions: RequestOptions(),
-            statusCode: 500,
-            data: {
-              "message": "Server error",
-              "exception":
-                  "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException",
-              "file":
-                  "/path/to/project/vendor/symfony/http-kernel/Exception/NotFoundHttpException.php",
-              "line": 23
-            },
-          ));
+      when(
+        mockDio.post(
+          '/items/mutate',
+          data: {
+            "mutate": [
+              {
+                "operation": "create",
+                "attributes": ItemModel(id: 1, name: "name").toJson(),
+              },
+            ],
+          },
+        ),
+      ).thenAnswer(
+        (_) async => Response(
+          requestOptions: RequestOptions(),
+          statusCode: 500,
+          data: {
+            "message": "Server error",
+            "exception":
+                "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException",
+            "file":
+                "/path/to/project/vendor/symfony/http-kernel/Exception/NotFoundHttpException.php",
+            "line": 23,
+          },
+        ),
+      );
 
       final result = await ItemRepository(mockDio).mutate(
         body: LaravelRestApiMutateBody(
@@ -102,7 +106,7 @@ void main() {
             Mutation(
               operation: MutationOperation.create,
               attributes: ItemModel(id: 1, name: "name").toJson(),
-            )
+            ),
           ],
         ),
       );
@@ -112,23 +116,25 @@ void main() {
     });
   });
   test('[500] With custom object error message returned', () async {
-    when(mockDio.post(
-      '/items/mutate',
-      data: {
-        "mutate": [
-          {
-            "operation": "create",
-            "attributes": ItemModel(id: 1, name: "name").toJson(),
-          },
-        ]
-      },
-    )).thenAnswer((_) async => Response(
-          requestOptions: RequestOptions(),
-          statusCode: 500,
-          data: {
-            "error": "error",
-          },
-        ));
+    when(
+      mockDio.post(
+        '/items/mutate',
+        data: {
+          "mutate": [
+            {
+              "operation": "create",
+              "attributes": ItemModel(id: 1, name: "name").toJson(),
+            },
+          ],
+        },
+      ),
+    ).thenAnswer(
+      (_) async => Response(
+        requestOptions: RequestOptions(),
+        statusCode: 500,
+        data: {"error": "error"},
+      ),
+    );
 
     final result = await ItemRepository(mockDio).mutate(
       body: LaravelRestApiMutateBody(
@@ -136,7 +142,7 @@ void main() {
           Mutation(
             operation: MutationOperation.create,
             attributes: ItemModel(id: 1, name: "name").toJson(),
-          )
+          ),
         ],
       ),
     );

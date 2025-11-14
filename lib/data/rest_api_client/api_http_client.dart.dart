@@ -7,11 +7,17 @@ class ApiHttpClient implements RestApiClient {
   ApiHttpClient({required this.dio});
 
   @override
-  Future<RestApiResponse> get(String url,
-      {Map<String, String>? headers, Map<String, String>? queryParams}) async {
+  Future<RestApiResponse> get(
+    String url, {
+    Map<String, String>? headers,
+    Map<String, String>? queryParams,
+  }) async {
     try {
-      final response = await dio.get("${dio.options.baseUrl}$url",
-          options: Options(headers: headers), queryParameters: queryParams);
+      final response = await dio.get(
+        "${dio.options.baseUrl}$url",
+        options: Options(headers: headers),
+        queryParameters: queryParams,
+      );
       return RestApiResponse(
         statusCode: response.statusCode ?? 500,
         body: response.data,
@@ -29,14 +35,17 @@ class ApiHttpClient implements RestApiClient {
     Object? body,
   }) async {
     try {
-      final response = await dio.post("${dio.options.baseUrl}$url",
-          options: Options(headers: headers),
-          queryParameters: queryParams,
-          data: body);
+      final response = await dio.post(
+        "${dio.options.baseUrl}$url",
+        options: Options(headers: headers),
+        queryParameters: queryParams,
+        data: body,
+      );
       return RestApiResponse(
-          statusCode: response.statusCode ?? 500,
-          body: response.data,
-          message: response.statusMessage);
+        statusCode: response.statusCode ?? 500,
+        body: response.data,
+        message: response.statusMessage,
+      );
     } catch (exception, stackTrace) {
       return handleError(exception, stackTrace);
     }
@@ -73,9 +82,6 @@ class ApiHttpClient implements RestApiClient {
         body: exception.response?.data ?? {'error': exception.message},
       );
     }
-    return RestApiResponse(
-      statusCode: 500,
-      body: {'error': exception},
-    );
+    return RestApiResponse(statusCode: 500, body: {'error': exception});
   }
 }

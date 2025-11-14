@@ -32,10 +32,7 @@ mixin ActionsFactory<T> {
         data: response.body?['data']['impacted'] ?? 0,
       );
     } catch (exception) {
-      return RestApiResponse<int>(
-        message: response.message,
-        statusCode: 500,
-      );
+      return RestApiResponse<int>(message: response.message, statusCode: 500);
     }
   }
 }

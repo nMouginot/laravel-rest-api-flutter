@@ -22,9 +22,10 @@ class PaginatedResponse<T> {
   factory PaginatedResponse.fromJson(Map<String, dynamic> json) {
     return PaginatedResponse(
       currentPage: json['current_page'],
-      data: (json['data'] as List<dynamic>)
-          .map((item) => UserData.fromJson(item))
-          .toList(),
+      data:
+          (json['data'] as List<dynamic>)
+              .map((item) => UserData.fromJson(item))
+              .toList(),
       from: json['from'],
       lastPage: json['last_page'],
       perPage: json['per_page'],
@@ -64,11 +65,7 @@ class UserData {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'gates': gates.toJson(),
-    };
+    return {'id': id, 'name': name, 'gates': gates.toJson()};
   }
 }
 
@@ -114,15 +111,11 @@ class MetaData {
   MetaData({required this.gates});
 
   factory MetaData.fromJson(Map<String, dynamic> json) {
-    return MetaData(
-      gates: MetaGates.fromJson(json['gates']),
-    );
+    return MetaData(gates: MetaGates.fromJson(json['gates']));
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'gates': gates.toJson(),
-    };
+    return {'gates': gates.toJson()};
   }
 }
 
@@ -132,14 +125,10 @@ class MetaGates {
   MetaGates({required this.authorizedToCreate});
 
   factory MetaGates.fromJson(Map<String, dynamic> json) {
-    return MetaGates(
-      authorizedToCreate: json['authorized_to_create'],
-    );
+    return MetaGates(authorizedToCreate: json['authorized_to_create']);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'authorized_to_create': authorizedToCreate,
-    };
+    return {'authorized_to_create': authorizedToCreate};
   }
 }
