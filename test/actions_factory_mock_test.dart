@@ -46,19 +46,14 @@ void main() {
           requestOptions: RequestOptions(),
           statusCode: 200,
           data: {
-            "data": {"impacted": 10}
+            "data": {"impacted": 10},
           },
         ),
       );
 
       final result = await ItemRepository(mockDio).actions(
         data: LaravelRestApiActionsBody(
-          fields: [
-            Action(
-              name: "expires_at",
-              value: "2023-04-29",
-            ),
-          ],
+          fields: [Action(name: "expires_at", value: "2023-04-29")],
         ),
       );
 
@@ -66,34 +61,33 @@ void main() {
     });
 
     test('[500] With common laravel error message', () async {
-      when(mockDio.post(
-        '/items',
-        data: {
-          "fields": [
-            {"name": "expires_at", "value": "2023-04-29"},
-          ],
-        },
-      )).thenAnswer((_) async => Response(
-            requestOptions: RequestOptions(),
-            statusCode: 500,
-            data: {
-              "message": "Server error",
-              "exception":
-                  "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException",
-              "file":
-                  "/path/to/project/vendor/symfony/http-kernel/Exception/NotFoundHttpException.php",
-              "line": 23
-            },
-          ));
+      when(
+        mockDio.post(
+          '/items',
+          data: {
+            "fields": [
+              {"name": "expires_at", "value": "2023-04-29"},
+            ],
+          },
+        ),
+      ).thenAnswer(
+        (_) async => Response(
+          requestOptions: RequestOptions(),
+          statusCode: 500,
+          data: {
+            "message": "Server error",
+            "exception":
+                "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException",
+            "file":
+                "/path/to/project/vendor/symfony/http-kernel/Exception/NotFoundHttpException.php",
+            "line": 23,
+          },
+        ),
+      );
 
       final result = await ItemRepository(mockDio).actions(
         data: LaravelRestApiActionsBody(
-          fields: [
-            Action(
-              name: "expires_at",
-              value: "2023-04-29",
-            ),
-          ],
+          fields: [Action(name: "expires_at", value: "2023-04-29")],
         ),
       );
 

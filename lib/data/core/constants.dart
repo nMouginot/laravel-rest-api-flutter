@@ -8,5 +8,5 @@ const List<int> successStatus = [
   206,
   207,
   208,
-  226
+  226,
 ];
