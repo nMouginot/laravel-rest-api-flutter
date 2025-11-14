@@ -3,10 +3,6 @@ class LaravelRestApiMutateBody {
 
   LaravelRestApiMutateBody({required this.mutate});
 
-  factory LaravelRestApiMutateBody.fromJson(Map<String, dynamic> json) {
-    return LaravelRestApiMutateBody(mutate: json["mutate"]);
-  }
-
   Map<String, dynamic> toJson() {
     return {"mutate": mutate.map((m) => m.toJson()).toList()};
   }
@@ -18,14 +14,6 @@ class Mutation {
   dynamic key;
 
   Mutation({required this.operation, this.attributes, this.key});
-
-  factory Mutation.fromJson(Map<String, dynamic> json) {
-    return Mutation(
-      operation: MutationOperation.values.byName(json['operation']),
-      attributes: json['attributes'],
-      key: json['key'],
-    );
-  }
 
   Map<String, dynamic> toJson() {
     return {
