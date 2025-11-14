@@ -1,13 +1,7 @@
 class LaravelRestApiMutateBody {
   List<Mutation> mutate;
 
-  LaravelRestApiMutateBody({
-    required this.mutate,
-  });
-
-  factory LaravelRestApiMutateBody.fromJson(Map<String, dynamic> json) {
-    return LaravelRestApiMutateBody(mutate: json["mutate"]);
-  }
+  LaravelRestApiMutateBody({required this.mutate});
 
   Map<String, dynamic> toJson() {
     return {"mutate": mutate.map((m) => m.toJson()).toList()};
@@ -19,19 +13,7 @@ class Mutation {
   Map<String, dynamic>? attributes;
   dynamic key;
 
-  Mutation({
-    required this.operation,
-    this.attributes,
-    this.key,
-  });
-
-  factory Mutation.fromJson(Map<String, dynamic> json) {
-    return Mutation(
-      operation: MutationOperation.values.byName(json['operation']),
-      attributes: json['attributes'],
-      key: json['key'],
-    );
-  }
+  Mutation({required this.operation, this.attributes, this.key});
 
   Map<String, dynamic> toJson() {
     return {
@@ -42,11 +24,4 @@ class Mutation {
   }
 }
 
-enum MutationOperation {
-  create,
-  update,
-  attach,
-  detach,
-  toggle,
-  sync,
-}
+enum MutationOperation { create, update, attach, detach, toggle, sync }
