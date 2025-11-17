@@ -28,10 +28,16 @@ class Mutation {
     return {
       'operation': operation.name,
       if (key != null) 'key': key,
-      if (relations != null)
-        'relations': relations!.map((e) => e.toJson()).toList(),
-      if (attributes != null) 'attributes': attributes,
       if (withoutDetaching != null) 'without_detaching': withoutDetaching,
+      if (attributes != null) 'attributes': attributes,
+      if (relations?.isNotEmpty == true)
+        'relations': {
+          for (final relation in relations!)
+            relation.table:
+                relation.relationType == RelationType.singleRelation
+                    ? relation.toJson()
+                    : [relation.toJson()],
+        },
     };
   }
 }
@@ -80,20 +86,13 @@ class MutationRelation {
   });
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> mutationRelationMap = {
+    return {
       'operation': operation.name,
       if (key != null) 'key': key,
       if (pivot != null) 'pivot': pivot,
       if (relations != null) 'relations': relations,
       if (attributes != null) 'attributes': attributes,
       if (withoutDetaching != null) 'without_detaching': withoutDetaching,
-    };
-
-    return switch (relationType) {
-      RelationType.singleRelation => {table: mutationRelationMap},
-      RelationType.multipleRelation => {
-        table: [mutationRelationMap],
-      },
     };
   }
 }
