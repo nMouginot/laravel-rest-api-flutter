@@ -25,21 +25,37 @@ class Mutation {
   });
 
   Map<String, dynamic> toJson() {
-    return {
+    final map = <String, dynamic>{
       'operation': operation.name,
       if (key != null) 'key': key,
       if (withoutDetaching != null) 'without_detaching': withoutDetaching,
       if (attributes != null) 'attributes': attributes,
-      if (relations?.isNotEmpty == true)
-        'relations': {
-          for (final relation in relations!)
-            relation.table:
-                relation.relationType == RelationType.singleRelation
-                    ? relation.toJson()
-                    : [relation.toJson()],
-        },
     };
+
+    if (relations?.isNotEmpty == true) {
+      map.addAll(getRelationsAsJson(relations!));
+    }
+
+    return map;
   }
+}
+
+Map<String, dynamic> getRelationsAsJson(List<MutationRelation> relations) {
+  final relationsMap = <String, dynamic>{};
+  for (final relation in relations) {
+    final key = relation.table;
+    final value = relation.toJson();
+
+    switch (relation.relationType) {
+      case RelationType.singleRelation:
+        relationsMap[key] = value;
+        break;
+      case RelationType.multipleRelation:
+        relationsMap[key] = [value];
+        break;
+    }
+  }
+  return {'relations': relationsMap};
 }
 
 enum MutationOperation { create, update }
