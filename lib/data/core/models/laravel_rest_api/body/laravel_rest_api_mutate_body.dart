@@ -25,15 +25,37 @@ class Mutation {
   });
 
   Map<String, dynamic> toJson() {
-    return {
+    final map = <String, dynamic>{
       'operation': operation.name,
       if (key != null) 'key': key,
-      if (relations != null)
-        'relations': relations!.map((e) => e.toJson()).toList(),
-      if (attributes != null) 'attributes': attributes,
       if (withoutDetaching != null) 'without_detaching': withoutDetaching,
+      if (attributes != null) 'attributes': attributes,
     };
+
+    if (relations?.isNotEmpty == true) {
+      map.addAll(getRelationsAsJson(relations!));
+    }
+
+    return map;
   }
+}
+
+Map<String, dynamic> getRelationsAsJson(List<MutationRelation> relations) {
+  final relationsMap = <String, dynamic>{};
+  for (final relation in relations) {
+    final key = relation.table;
+    final value = relation.toJson();
+
+    switch (relation.relationType) {
+      case RelationType.singleRelation:
+        relationsMap[key] = value;
+        break;
+      case RelationType.multipleRelation:
+        relationsMap[key] = [value];
+        break;
+    }
+  }
+  return {'relations': relationsMap};
 }
 
 enum MutationOperation { create, update }
@@ -80,20 +102,13 @@ class MutationRelation {
   });
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> mutationRelationMap = {
+    return {
       'operation': operation.name,
       if (key != null) 'key': key,
       if (pivot != null) 'pivot': pivot,
       if (relations != null) 'relations': relations,
       if (attributes != null) 'attributes': attributes,
       if (withoutDetaching != null) 'without_detaching': withoutDetaching,
-    };
-
-    return switch (relationType) {
-      RelationType.singleRelation => {table: mutationRelationMap},
-      RelationType.multipleRelation => {
-        table: [mutationRelationMap],
-      },
     };
   }
 }

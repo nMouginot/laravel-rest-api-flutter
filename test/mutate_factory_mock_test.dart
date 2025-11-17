@@ -163,7 +163,7 @@ void main() {
                       operation: MutationRelationOperation.toggle,
                     ),
                     MutationRelation(
-                      table: 'item',
+                      table: 'item2',
                       key: secondChildItem.id,
                       attributes: secondChildItem.toJson(),
                       relationType: RelationType.multipleRelation,
@@ -180,8 +180,7 @@ void main() {
         expect(mutateMap['attributes']['name'], item.name);
         expect(mutateMap['attributes']['id'], item.id);
 
-        final mutateChildMap =
-            result['mutate'].first['relations'].first['item'];
+        final mutateChildMap = result['mutate'].first['relations']['item'];
         expect(mutateChildMap['without_detaching'], false);
         expect(mutateChildMap['key'], childItem.id);
         expect(mutateChildMap['attributes']['name'], childItem.name);
@@ -194,7 +193,7 @@ void main() {
         );
 
         final mutateSecondChildMap =
-            result['mutate'].first['relations'][1]['item'].first;
+            result['mutate'].first['relations']['item2'].first;
         expect(mutateSecondChildMap['key'], secondChildItem.id);
         expect(
           mutateSecondChildMap['attributes']['name'],
