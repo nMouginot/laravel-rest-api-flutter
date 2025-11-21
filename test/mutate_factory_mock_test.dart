@@ -115,6 +115,102 @@ void main() {
       expect(result.message, "Server error");
     });
   });
+
+  group('Mutate complex .ToJson() tests', () {
+    test('Mutation update existing item without relation', () async {
+      final ItemModel item = ItemModel(id: 1, name: "new item name !");
+
+      final result =
+          LaravelRestApiMutateBody(
+            mutate: [
+              Mutation(
+                key: item.id,
+                withoutDetaching: true,
+                operation: MutationOperation.update,
+                attributes: item.toJson(),
+              ),
+            ],
+          ).toJson();
+
+      final mutateMap = result['mutate'].first;
+      expect(mutateMap['key'], item.id);
+      expect(mutateMap['without_detaching'], true);
+      expect(mutateMap['operation'], MutationOperation.update.name);
+      expect(mutateMap['attributes']['name'], item.name);
+      expect(mutateMap['attributes']['id'], item.id);
+    });
+
+    test(
+      'Mutation update existing item with two relations and a pivot',
+      () async {
+        final ItemModel item = ItemModel(id: 1, name: "new item");
+        final ItemModel childItem = ItemModel(id: 2, name: "child");
+        final ItemModel pivotItem = ItemModel(id: 3, name: "pivot");
+        final ItemModel secondChildItem = ItemModel(id: 4, name: "secondchild");
+
+        final result =
+            LaravelRestApiMutateBody(
+              mutate: [
+                Mutation(
+                  withoutDetaching: false,
+                  operation: MutationOperation.create,
+                  attributes: item.toJson(),
+                  relations: [
+                    MutationRelation(
+                      table: 'item',
+                      key: childItem.id,
+                      withoutDetaching: false,
+                      pivot: pivotItem.toJson(),
+                      attributes: childItem.toJson(),
+                      relationType: RelationType.singleRelation,
+                      operation: MutationRelationOperation.toggle,
+                    ),
+                    MutationRelation(
+                      table: 'item2',
+                      key: secondChildItem.id,
+                      attributes: secondChildItem.toJson(),
+                      relationType: RelationType.multipleRelation,
+                      operation: MutationRelationOperation.sync,
+                    ),
+                  ],
+                ),
+              ],
+            ).toJson();
+
+        final mutateMap = result['mutate'].first;
+        expect(mutateMap['without_detaching'], false);
+        expect(mutateMap['operation'], MutationOperation.create.name);
+        expect(mutateMap['attributes']['name'], item.name);
+        expect(mutateMap['attributes']['id'], item.id);
+
+        final mutateChildMap = result['mutate'].first['relations']['item'];
+        expect(mutateChildMap['without_detaching'], false);
+        expect(mutateChildMap['key'], childItem.id);
+        expect(mutateChildMap['attributes']['name'], childItem.name);
+        expect(mutateChildMap['attributes']['id'], childItem.id);
+        expect(mutateChildMap['pivot']['name'], pivotItem.name);
+        expect(mutateChildMap['pivot']['id'], pivotItem.id);
+        expect(
+          mutateChildMap['operation'],
+          MutationRelationOperation.toggle.name,
+        );
+
+        final mutateSecondChildMap =
+            result['mutate'].first['relations']['item2'].first;
+        expect(mutateSecondChildMap['key'], secondChildItem.id);
+        expect(
+          mutateSecondChildMap['attributes']['name'],
+          secondChildItem.name,
+        );
+        expect(mutateSecondChildMap['attributes']['id'], secondChildItem.id);
+        expect(
+          mutateSecondChildMap['operation'],
+          MutationRelationOperation.sync.name,
+        );
+      },
+    );
+  });
+
   test('[500] With custom object error message returned', () async {
     when(
       mockDio.post(
