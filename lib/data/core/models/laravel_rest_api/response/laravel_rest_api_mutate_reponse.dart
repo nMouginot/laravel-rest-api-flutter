@@ -2,10 +2,7 @@ class LaravelRestApiMutateResponse {
   final List<dynamic> created;
   final List<dynamic> updated;
 
-  LaravelRestApiMutateResponse({
-    required this.created,
-    required this.updated,
-  });
+  LaravelRestApiMutateResponse({required this.created, required this.updated});
 
   factory LaravelRestApiMutateResponse.fromJson(Map<String, dynamic> json) {
     return LaravelRestApiMutateResponse(
@@ -15,9 +12,6 @@ class LaravelRestApiMutateResponse {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'created': created,
-      'updated': updated,
-    };
+    return {'created': created, 'updated': updated};
   }
 }

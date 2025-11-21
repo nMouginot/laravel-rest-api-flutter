@@ -5,7 +5,9 @@ class RestApiTestingInterceptor extends Interceptor {
 
   @override
   void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     // await dotenv.load(fileName: ".env/.env.testing");
     // options.headers["Authorization"] = dotenv.env['TESTING_JWT'];
     return super.onRequest(options, handler);

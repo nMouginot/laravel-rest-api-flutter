@@ -35,7 +35,7 @@ void main() {
         mockDio.delete(
           '/items',
           data: {
-            "resources": [5, 6]
+            "resources": [5, 6],
           },
         ),
       ).thenAnswer(
@@ -45,37 +45,39 @@ void main() {
           data: {
             "data": [
               {"id": 5, "name": "Axe"},
-              {"id": 6, "name": "Hammer"}
+              {"id": 6, "name": "Hammer"},
             ],
           },
         ),
       );
 
-      final result = await ItemRepository(mockDio).delete(
-        resourceIds: [5, 6],
-      );
+      final result = await ItemRepository(mockDio).delete(resourceIds: [5, 6]);
 
       expect(result.data?.length, 2);
     });
 
     test('[500] With common laravel error message', () async {
-      when(mockDio.delete(
-        '/items',
-        data: {
-          "resources": [5, 6]
-        },
-      )).thenAnswer((_) async => Response(
-            requestOptions: RequestOptions(),
-            statusCode: 500,
-            data: {
-              "message": "Server error",
-              "exception":
-                  "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException",
-              "file":
-                  "/path/to/project/vendor/symfony/http-kernel/Exception/NotFoundHttpException.php",
-              "line": 23
-            },
-          ));
+      when(
+        mockDio.delete(
+          '/items',
+          data: {
+            "resources": [5, 6],
+          },
+        ),
+      ).thenAnswer(
+        (_) async => Response(
+          requestOptions: RequestOptions(),
+          statusCode: 500,
+          data: {
+            "message": "Server error",
+            "exception":
+                "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException",
+            "file":
+                "/path/to/project/vendor/symfony/http-kernel/Exception/NotFoundHttpException.php",
+            "line": 23,
+          },
+        ),
+      );
 
       final result = await ItemRepository(mockDio).delete(resourceIds: [5, 6]);
 

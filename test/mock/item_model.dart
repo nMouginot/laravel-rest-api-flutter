@@ -5,16 +5,10 @@ class ItemModel {
   ItemModel({required this.id, required this.name});
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-    };
+    return {'id': id, 'name': name};
   }
 
   factory ItemModel.fromJson(Map<String, dynamic> json) {
-    return ItemModel(
-      id: json['id'] as int,
-      name: json['name'] as String,
-    );
+    return ItemModel(id: json['id'] as int, name: json['name'] as String);
   }
 }
