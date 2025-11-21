@@ -183,9 +183,10 @@ class Select {
 class Include {
   final String relation;
   final List<Filter>? filters;
+  final List<Select>? selects;
   final int? limit;
 
-  Include({required this.relation, this.filters, this.limit});
+  Include({required this.relation, this.filters, this.selects, this.limit});
 
   factory Include.fromJson(Map<String, dynamic> json) {
     return Include(
@@ -193,6 +194,10 @@ class Include {
       filters:
           (json['filters'] as List<dynamic>?)
               ?.map((e) => Filter.fromJson(e))
+              .toList(),
+      selects:
+          (json['selects'] as List<dynamic>?)
+              ?.map((e) => Select.fromJson(e))
               .toList(),
       limit: json['limit'] as int?,
     );
@@ -202,6 +207,7 @@ class Include {
     return {
       'relation': relation,
       if (filters != null) 'filters': filters!.map((e) => e.toJson()).toList(),
+      if (selects != null) 'selects': selects!.map((e) => e.toJson()).toList(),
       if (limit != null) 'limit': limit,
     };
   }
