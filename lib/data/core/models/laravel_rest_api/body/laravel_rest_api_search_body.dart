@@ -110,14 +110,16 @@ class Select {
 class Include {
   final String relation;
   final List<Filter>? filters;
+  final List<Select>? selects;
   final int? limit;
 
-  Include({required this.relation, this.filters, this.limit});
+  Include({required this.relation, this.filters, this.selects, this.limit});
 
   Map<String, dynamic> toJson() {
     return {
       'relation': relation,
       if (filters != null) 'filters': filters!.map((e) => e.toJson()).toList(),
+      if (selects != null) 'selects': selects!.map((e) => e.toJson()).toList(),
       if (limit != null) 'limit': limit,
     };
   }
