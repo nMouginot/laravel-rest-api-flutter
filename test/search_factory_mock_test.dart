@@ -172,6 +172,7 @@ void main() {
       includes: [
         Include(
           relation: "relation",
+          includes: [Include(relation: "relationIncludes")],
           selects: [Select(field: "relationField")],
           filters: [Filter(field: "relationFilter")],
         ),
@@ -207,6 +208,8 @@ void main() {
     expect(capturedArgs[0]["search"].containsKey('limit'), isTrue);
     expect(capturedArgs[0]["search"].containsKey('page'), isTrue);
     expect(
+      capturedArgs[0]["search"]["includes"][0]["includes"][0]["relation"] ==
+          "relationIncludes",
       capturedArgs[0]["search"]["includes"][0]["selects"][0]["field"] ==
           "relationField",
       isTrue,
