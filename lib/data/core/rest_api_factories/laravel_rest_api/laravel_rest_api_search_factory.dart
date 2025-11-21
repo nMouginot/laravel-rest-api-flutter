@@ -28,6 +28,10 @@ mixin SearchFactory<T> {
 
   /// Performs a search request and returns a list of items of type `T`.
   Future<RestApiResponse<List<T>>> search({
+    /// **Text Search**: Allows for full-text search on enabled resources.
+    /// Use the `text` parameter with a `value` containing your search terms.
+    TextSearch? text,
+
     /// **Scopes**: Allows for scoped queries defined in your Laravel resource.
     /// Specify the scope name and its parameters.
     List<Scope>? scopes,
@@ -70,6 +74,7 @@ mixin SearchFactory<T> {
       final requestBody = {
         "search": {
           ...?defaultSearchBody?.toJson(),
+          if (text != null) 'text': text.toJson(),
           if (scopes != null) 'scopes': scopes.map((e) => e.toJson()).toList(),
           if (filters != null)
             'filters': filters.map((e) => e.toJson()).toList(),
