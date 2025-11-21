@@ -164,6 +164,7 @@ void main() {
     );
 
     await ItemRepositoryWithDefaultBody(mockDio).search(
+      text: TextSearch(value: "my text search"),
       filters: [Filter(field: "field", type: "type")],
       aggregates: [
         Aggregate(relation: "relation", type: "type", field: "field"),
@@ -171,6 +172,7 @@ void main() {
       includes: [
         Include(
           relation: "relation",
+          includes: [Include(relation: "relationIncludes")],
           selects: [Select(field: "relationField")],
           filters: [Filter(field: "relationFilter")],
         ),
@@ -195,6 +197,7 @@ void main() {
         ).captured;
 
     expect(capturedArgs[0].containsKey('search'), isTrue);
+    expect(capturedArgs[0]["search"].containsKey('text'), isTrue);
     expect(capturedArgs[0]["search"].containsKey('filters'), isTrue);
     expect(capturedArgs[0]["search"].containsKey('aggregates'), isTrue);
     expect(capturedArgs[0]["search"].containsKey('includes'), isTrue);
@@ -205,6 +208,8 @@ void main() {
     expect(capturedArgs[0]["search"].containsKey('limit'), isTrue);
     expect(capturedArgs[0]["search"].containsKey('page'), isTrue);
     expect(
+      capturedArgs[0]["search"]["includes"][0]["includes"][0]["relation"] ==
+          "relationIncludes",
       capturedArgs[0]["search"]["includes"][0]["selects"][0]["field"] ==
           "relationField",
       isTrue,
